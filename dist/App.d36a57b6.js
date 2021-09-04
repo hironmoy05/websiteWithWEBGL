@@ -37412,7 +37412,11 @@ class MapControls extends OrbitControls {
 }
 
 exports.MapControls = MapControls;
-},{"three":"node_modules/three/build/three.module.js"}],"App.js":[function(require,module,exports) {
+},{"three":"node_modules/three/build/three.module.js"}],"Shaders/vertex.glsl":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvoid main () {\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}";
+},{}],"Shaders/fragment.glsl":[function(require,module,exports) {
+module.exports = "#define GLSLIFY 1\nvoid main () {\n    gl_FragColor = vec4(1., 0., 0., 1.);\n}";
+},{}],"App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37423,6 +37427,12 @@ exports.default = void 0;
 var THREE = _interopRequireWildcard(require("three"));
 
 var _OrbitControls = require("THREE/examples/jsm/controls/OrbitControls");
+
+var _vertex = _interopRequireDefault(require("./Shaders/vertex.glsl"));
+
+var _fragment = _interopRequireDefault(require("./Shaders/fragment.glsl"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -37454,8 +37464,25 @@ var Sketch = /*#__PURE__*/function () {
     });
 
     _defineProperty(this, "addObjects", function () {
-      _this.geometry = new THREE.BoxBufferGeometry(0.2, 0.2, 0.2);
-      _this.material = new THREE.MeshNormalMaterial();
+      // this.geometry = new THREE.BoxBufferGeometry(0.2, 0.2, 0.2);
+      _this.geometry = new THREE.PlaneBufferGeometry(0.5, 0.5, 70, 70); // this.material = new THREE.MeshNormalMaterial();
+      // this.material = new THREE.MeshBasicMaterial({
+      // 	color: 0x33ffaa,
+      // });
+
+      _this.material = new THREE.ShaderMaterial({
+        wireframe: true,
+        uniforms: {
+          time: {
+            value: 0
+          },
+          resolution: {
+            value: new THREE.Vector2()
+          }
+        },
+        vertexShader: _vertex.default,
+        fragmentShader: _fragment.default
+      });
       _this.mesh = new THREE.Mesh(_this.geometry, _this.material);
 
       _this.scene.add(_this.mesh);
@@ -37479,7 +37506,8 @@ var Sketch = /*#__PURE__*/function () {
     this.camera.position.z = 1;
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({
-      antialias: true
+      antialias: true,
+      alpha: true
     });
     this.renderer.setSize(this.width, this.height); // this.renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -37532,7 +37560,7 @@ new Sketch({
 // 	mesh.rotation.y = time / 1000;
 // 	renderer.render(scene, camera);
 // }
-},{"three":"node_modules/three/build/three.module.js","THREE/examples/jsm/controls/OrbitControls":"node_modules/THREE/examples/jsm/controls/OrbitControls.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"three":"node_modules/three/build/three.module.js","THREE/examples/jsm/controls/OrbitControls":"node_modules/THREE/examples/jsm/controls/OrbitControls.js","./Shaders/vertex.glsl":"Shaders/vertex.glsl","./Shaders/fragment.glsl":"Shaders/fragment.glsl"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
