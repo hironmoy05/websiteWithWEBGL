@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'THREE/examples/jsm/controls/OrbitControls';
 
 export default class Sketch {
 	constructor(options) {
@@ -21,6 +22,7 @@ export default class Sketch {
 		// this.renderer.setPixelRatio(window.devicePixelRatio);
 
 		this.container.appendChild(this.renderer.domElement);
+		this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
 		this.time = 0;
 		this.addObjects();
