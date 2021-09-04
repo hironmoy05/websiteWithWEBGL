@@ -37430,49 +37430,77 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var Sketch = function Sketch(options) {
-  var _this = this;
+var Sketch = /*#__PURE__*/function () {
+  function Sketch(options) {
+    var _this = this;
 
-  _classCallCheck(this, Sketch);
+    _classCallCheck(this, Sketch);
 
-  _defineProperty(this, "addObjects", function () {
-    _this.geometry = new THREE.BoxBufferGeometry(0.2, 0.2, 0.2);
-    _this.material = new THREE.MeshNormalMaterial();
-    _this.mesh = new THREE.Mesh(_this.geometry, _this.material);
+    _defineProperty(this, "resize", function () {
+      _this.width = _this.container.offsetWidth;
+      _this.height = _this.container.offsetHeight;
 
-    _this.scene.add(_this.mesh);
-  });
+      _this.renderer.setSize(_this.width, _this.height);
 
-  _defineProperty(this, "render", function () {
-    _this.time += 0.05;
-    _this.mesh.rotation.x = _this.time / 2000;
-    _this.mesh.rotation.y = _this.time / 1000;
+      _this.camera.aspect = _this.width / _this.height;
 
-    _this.renderer.render(_this.scene, _this.camera); // console.log(this.time);
+      _this.camera.updateProjectionMatrix();
+    });
+
+    _defineProperty(this, "addObjects", function () {
+      _this.geometry = new THREE.BoxBufferGeometry(0.2, 0.2, 0.2);
+      _this.material = new THREE.MeshNormalMaterial();
+      _this.mesh = new THREE.Mesh(_this.geometry, _this.material);
+
+      _this.scene.add(_this.mesh);
+    });
+
+    _defineProperty(this, "render", function () {
+      _this.time += 0.05;
+      _this.mesh.rotation.x = _this.time / 2000;
+      _this.mesh.rotation.y = _this.time / 1000;
+
+      _this.renderer.render(_this.scene, _this.camera); // console.log(this.time);
 
 
-    requestAnimationFrame(_this.render);
-  });
+      requestAnimationFrame(_this.render);
+    });
 
-  this.container = options.domElement;
-  this.width = this.container.offsetWidth;
-  this.height = this.container.offsetHeight;
-  this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 0.01, 10);
-  this.camera.position.z = 1;
-  this.scene = new THREE.Scene();
-  this.renderer = new THREE.WebGLRenderer({
-    antialias: true
-  });
-  this.renderer.setSize(this.width, this.height); // this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.container = options.domElement;
+    this.width = this.container.offsetWidth;
+    this.height = this.container.offsetHeight;
+    this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 0.01, 10);
+    this.camera.position.z = 1;
+    this.scene = new THREE.Scene();
+    this.renderer = new THREE.WebGLRenderer({
+      antialias: true
+    });
+    this.renderer.setSize(this.width, this.height); // this.renderer.setPixelRatio(window.devicePixelRatio);
 
-  this.container.appendChild(this.renderer.domElement);
-  this.controls = new _OrbitControls.OrbitControls(this.camera, this.renderer.domElement);
-  this.time = 0;
-  this.addObjects();
-  this.render();
-};
+    this.container.appendChild(this.renderer.domElement);
+    this.controls = new _OrbitControls.OrbitControls(this.camera, this.renderer.domElement);
+    this.time = 0;
+    this.resize();
+    this.addObjects();
+    this.render();
+    this.setupResize();
+  }
+
+  _createClass(Sketch, [{
+    key: "setupResize",
+    value: function setupResize() {
+      window.addEventListener('resize', this.resize.bind(this));
+    }
+  }]);
+
+  return Sketch;
+}();
 
 exports.default = Sketch;
 new Sketch({
