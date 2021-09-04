@@ -36537,38 +36537,92 @@ if (typeof window !== 'undefined') {
 },{}],"App.js":[function(require,module,exports) {
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
 var THREE = _interopRequireWildcard(require("three"));
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-var camera, scene, renderer;
-var geometry, material, mesh;
-init();
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function init() {
-  camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 10);
-  camera.position.z = 1;
-  scene = new THREE.Scene();
-  geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
-  material = new THREE.MeshNormalMaterial();
-  mesh = new THREE.Mesh(geometry, material);
-  scene.add(mesh);
-  renderer = new THREE.WebGLRenderer({
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var Sketch = function Sketch(options) {
+  var _this = this;
+
+  _classCallCheck(this, Sketch);
+
+  _defineProperty(this, "addObjects", function () {
+    _this.geometry = new THREE.BoxBufferGeometry(0.2, 0.2, 0.2);
+    _this.material = new THREE.MeshNormalMaterial();
+    _this.mesh = new THREE.Mesh(_this.geometry, _this.material);
+
+    _this.scene.add(_this.mesh);
+  });
+
+  _defineProperty(this, "render", function () {
+    _this.time += 0.05;
+    _this.mesh.rotation.x = _this.time / 2000;
+    _this.mesh.rotation.y = _this.time / 1000;
+
+    _this.renderer.render(_this.scene, _this.camera); // console.log(this.time);
+
+
+    requestAnimationFrame(_this.render);
+  });
+
+  this.container = options.domElement;
+  this.width = this.container.offsetWidth;
+  this.height = this.container.offsetHeight;
+  this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 0.01, 10);
+  this.camera.position.z = 1;
+  this.scene = new THREE.Scene();
+  this.renderer = new THREE.WebGLRenderer({
     antialias: true
   });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animation);
-  var container = document.getElementById('container');
-  container.appendChild(renderer.domElement);
-}
+  this.renderer.setSize(this.width, this.height); // this.renderer.setPixelRatio(window.devicePixelRatio);
 
-function animation(time) {
-  mesh.rotation.x = time / 2000;
-  mesh.rotation.y = time / 1000;
-  renderer.render(scene, camera);
-}
+  this.container.appendChild(this.renderer.domElement);
+  this.time = 0;
+  this.addObjects();
+  this.render();
+};
+
+exports.default = Sketch;
+new Sketch({
+  domElement: document.getElementById('container')
+}); // let camera, scene, renderer;
+// let geometry, material, mesh;
+// init();
+// function init() {
+// 	camera = new THREE.PerspectiveCamera(
+// 		70,
+// 		window.innerWidth / window.innerHeight,
+// 		0.01,
+// 		10
+// 	);
+// 	camera.position.z = 1;
+// 	scene = new THREE.Scene();
+// 	geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
+// 	material = new THREE.MeshNormalMaterial();
+// 	mesh = new THREE.Mesh(geometry, material);
+// 	scene.add(mesh);
+// 	renderer = new THREE.WebGLRenderer({ antialias: true });
+// 	renderer.setSize(window.innerWidth, window.innerHeight);
+// 	renderer.setAnimationLoop(animation);
+// 	const container = document.getElementById('container');
+// 	container.appendChild(renderer.domElement);
+// }
+// function animation(time) {
+// 	mesh.rotation.x = time / 2000;
+// 	mesh.rotation.y = time / 1000;
+// 	renderer.render(scene, camera);
+// }
 },{"three":"node_modules/three/build/three.module.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
