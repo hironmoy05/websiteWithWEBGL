@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'THREE/examples/jsm/controls/OrbitControls';
 import vertex from './Shaders/vertex.glsl';
 import fragment from './Shaders/fragment.glsl';
+import numberTexture from './texture.jpg';
+import waterTexture from './water.jpg';
 
 export default class Sketch {
 	constructor(options) {
@@ -54,9 +56,10 @@ export default class Sketch {
 		// });
 
 		this.material = new THREE.ShaderMaterial({
-			wireframe: true,
+			wireframe: false,
 			uniforms: {
 				time: { value: 0 },
+				uTexture: { value: new THREE.TextureLoader().load(waterTexture) },
 				resolution: { value: new THREE.Vector2() },
 			},
 			vertexShader: vertex,
