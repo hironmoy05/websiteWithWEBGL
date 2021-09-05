@@ -49,11 +49,14 @@ export default class Sketch {
 
 	addObjects = () => {
 		// this.geometry = new THREE.BoxBufferGeometry(0.2, 0.2, 0.2);
-		this.geometry = new THREE.PlaneBufferGeometry(0.5, 0.5, 70, 70);
+		// this.geometry = new THREE.PlaneBufferGeometry(0.5, 0.5, 70, 70);
+		this.geometry = new THREE.SphereBufferGeometry(0.2, 160, 160);
 		// this.material = new THREE.MeshNormalMaterial();
 		// this.material = new THREE.MeshBasicMaterial({
 		// 	color: 0x33ffaa,
 		// });
+		// this.renderer.setPixelRatio(window.devicePixelRatio);
+		// this.renderer.setPixelRatio(4);
 
 		this.material = new THREE.ShaderMaterial({
 			wireframe: false,
